@@ -2,7 +2,7 @@ function importLibs() {
   function importLib(urls) {
     document.writeln(`<script type="text/javascript" src="${urls}"></script>`)
   }
-  document.writeln(`<script src="../CDN/vue.global.js"></script>`)
+  document.writeln(`<script src="../../CDN/vue.global.js"></script>`)
   importLib('../../Cesium/Cesium.js');
   importLib('../../CesiumNavigation/CesiumNavigation.umd.js');
   importLib('../../CDN/heatmap.min.js');
