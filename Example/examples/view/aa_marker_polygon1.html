@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    "destination": [
+                        110.47663122986691,
+                        21.057759757008824,
+                        841.1657158639108
+                    ],
+                    "orientation": {
+                        "heading": 176.478091672167,
+                        "pitch": -82.82177085951439,
+                        "roll": 180.0006302307511
+                    }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        add()
+        add1()
+        add3dtile()
+        function add () {
+          const polygonMarker = map.addPolygon({
+            id:'polygon*',
+            position: [
+            [110.47851615232508, 21.057590184932096, 99.86572262336267],
+            [110.47867174154487, 21.05580490343859, 0],
+            [110.48027912384504, 21.05748996893612, 81.96342931212985]
+            ],
+            color: 'rgba(255,255,0,0.5)',
+            content: { text: '回调回调' }
+          })
+        }
+        function add1 () {
+          // 贴地面。会覆盖在倾斜摄影上方
+          const polygonMarker = map.addPolygon1({
+            id:'polygon*',
+            position: [
+            [110.47566481744983, 21.057646097509092, 82.66934954497874],
+            [110.4752139905508, 21.055318054294254, 0.03335595225465584],
+            [110.47737569655283, 21.057526642386655, 81.64122905211006]
+            ],
+            color: 'rgba(255,255,0,0.5)',
+            content: { text: '回调回调' }
+          })
+          map.addModel({
+            id: 'model*',
+            position: [120.00163023130983, 30.005739794853522, 0.19251061771700276],
+            url: '/Example/examples/model/消防车.gltf'
+          })
+          // [120.00163023130983, 30.005739794853522, 0.19251061771700276]
+          polygonMarker.addEventListener((e) => {
+            console.log('面点击的回调', e)
+            console.log('面的经纬度', e.marker.getPosition())
+          })
+        }
+        function add3dtile () {
+          const tile = map.addTileset('/湛江宝钢/3dtile/tileset.json')
+          console.log(tile)
+          map.viewer.flyTo(tile.tileset)
+        }
+        function show () {
+          map.showMarker('polygon*')
+        }
+        function hide () {
+          map.hideMarker('polygon*')
+        }
+        function remove () {
+          map.removeMarker('polygon*')
+        }
+        const guiSetting = {
+          add1,
+          add3dtile,
+          show,
+          hide,
+          remove
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add1').name('添加矢量')
+        gui.add(guiSetting, 'add3dtile').name('添加矢量')
+        gui.add(guiSetting, 'show').name('显示')
+        gui.add(guiSetting, 'hide').name('隐藏')
+        gui.add(guiSetting, 'remove').name('移除')
+    </script>
+</body>
+
+</html>

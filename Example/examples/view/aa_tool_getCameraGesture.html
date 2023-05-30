@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        function get () {
+          console.log(map.getCameraGesture())
+        }
+        function getSceneImage () {
+            console.log(map.getSceneImage('base64'))// 不传默认是base64会返回base64
+        }
+        function getSceneImageDown () {
+            map.getSceneImage('image') // 直接下载图片
+        }
+        const guiSetting = {
+          get,
+          getSceneImage,
+          getSceneImageDown
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'get').name('获取相机视角')
+        gui.add(guiSetting, 'getSceneImage').name('获取场景图片base64')
+        gui.add(guiSetting, 'getSceneImageDown').name('下载场景图片')
+    </script>
+</body>
+
+</html>

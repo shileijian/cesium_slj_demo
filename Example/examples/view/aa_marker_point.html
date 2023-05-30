@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm)
+        }
+        initMap()
+
+        add()
+        function add () {
+          map.addPoint({
+            position: [120,30,10],
+            id: '123*'
+          })
+          const marker = map.addPoint({
+            position: [120.001,30,10],
+            id: '123*',
+            url: '/Example/examples/images/marker_icon.png',
+            scale: 2, // 缩放倍数，设置了width和height这个就会失效
+            width: 40,
+            height: 40,
+            content: { text: '213123' } // 点击事件回调返回
+          })
+          // 添加文字
+          marker.addLabel({
+            text: 'text',
+            font: '16px sans-serif',
+            color: 'rgba(255,255,255,1)',
+            offset: [10, 10], // 偏移量，像素 x, y 正数为右和下
+          })
+          // 矢量数据的点击事件都是addEventListener，点击事件
+          marker.addEventListener((res) => {
+            console.log('LEFT_CLICK', res)
+            // 点击之后飞向marker，不写参数也行
+            marker.flyTo({
+              heading: 90, // 0是正北
+              pitch: -90, // -90是垂直往下看
+              distance: 1000
+            })
+          })
+        }
+        function show () {
+          map.showMarker('123*')
+        }
+        function hide () {
+          map.hideMarker('123*')
+        }
+        function remove () {
+          map.removeMarker('123*')
+        }
+        const guiSetting = {
+          add,
+          show,
+          hide,
+          remove
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加矢量')
+        gui.add(guiSetting, 'show').name('显示')
+        gui.add(guiSetting, 'hide').name('隐藏')
+        gui.add(guiSetting, 'remove').name('移除')
+    </script>
+</body>
+
+</html>

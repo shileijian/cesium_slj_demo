@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <video id="daolu" muted autoplay loop crossorigin controls>
+        <source src="/Example/examples/media/video.mp4" type="video/mp4"/>
+    </video>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+              defaultView: {
+                    duration: 3,
+                    "destination": [
+                        110.47663122986691,
+                        21.057759757008824,
+                        841.1657158639108
+                    ],
+                    "orientation": {
+                        "heading": 176.478091672167,
+                        "pitch": -82.82177085951439,
+                        "roll": 180.0006302307511
+                    }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        function add3dtile () {
+          const tile = map.addTileset('/湛江宝钢/3dtile/tileset.json')
+          console.log(tile)
+          map.viewer.flyTo(tile.tileset)
+        }
+        initMap()
+        add3dtile()
+        function add () {
+          const dom = document.getElementById('daolu')
+          dom.play()
+          map.addVideoFusion({
+            id:'polygon*',
+            dom: dom,
+            heigth: 100,
+            position: [
+            [110.47851615232508, 21.057590184932096, 99.86572262336267],
+            [110.47867174154487, 21.05580490343859, 0],
+            [110.48027912384504, 21.05748996893612, 81.96342931212985]
+            ],
+          })
+        }
+        const guiSetting = {
+          add
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加要素')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    "destination": [
+                        110.47663122986691,
+                        21.057759757008824,
+                        841.1657158639108
+                    ],
+                    "orientation": {
+                        "heading": 176.478091672167,
+                        "pitch": -82.82177085951439,
+                        "roll": 180.0006302307511
+                    }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        function add () {
+          map.addRotateCircle({
+            id: 'circle*',
+            position: [110.47851615232508, 21.057590184932096, 99.86572262336267],
+            // height: 60,
+            url: '/Example/examples/images/rotatebg.png',
+            radius: 500,
+            color: 'rgba(255,0,0,1)',
+          })
+        }
+        function remove () {
+            map.removeMarker('circle*')
+        }
+        const guiSetting = {
+          add,
+          remove
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加要素')
+        gui.add(guiSetting, 'remove').name('移除要素')
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/Example/examples/js/dat.gui.min.js"></script>
+    <script src="/public/Cesium/Cesium.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module" src="../../../src/scripts/gl3d/index-lt.js"></script>
+    <script id='editJs'>
+        const initMap = async () => {
+            const parm = {
+                center: { lon: 120, lat: 30, height: 100000, pitch: -60, heading: 0 }//视角位置：经度-纬度-高度-俯仰角（负数从上往下看）-方位角
+            }
+            window.viewer = LT3D.initGisMap("cesiumContainer", parm);
+            viewer.terrainProvider = Cesium.createWorldTerrain();
+
+            /**
+             * 生成的实体都集合到图层中
+             * dataSource 图层，可选，不传入时自动生成新的图层，传入则将新创建的实体加入到该图层中
+            */
+            let dataSource = new Cesium.CustomDataSource("wall");//创建一个名字叫line 的实体集合图层
+            viewer.dataSources.add(dataSource); //将该图层加入到地图中
+
+            let material = new Cesium.ImageLineMaterialProperty(
+                {
+                    image: "/Example/examples/images/wall.png",
+                    duration: 3000,
+                    stretching: true,//是否允许图片变形，可选，默认允许
+                    imageW: 512,//图片显示长度，可选，默认为1，针对图片禁止拉伸变形有效，（效果待优化）
+                    number: 10,//轮次显示的图片数量,可选，默认为1，针对图片允许拉伸变形有效
+                    color: "rgba(255,255,255,1)"
+                }
+            )
+            let points = [
+                120, 30, 2000,
+                120.5, 30, 2000,
+                120.5, 30.2, 2000,
+                120, 30.2, 2000,
+                120, 30, 2000
+            ];
+            let data = {
+                id: "wall-1",//可选
+                positions: points,
+                minimumHeights: [0, 0, 0, 0, 0], //墙距离地面的距离。与定点个数想对应
+                fillColor: "#fff",
+                material: material,//可选，如果不传，生成fillcolor单色墙体
+            }
+            let { entity } = LT3D.addVector.wall.addWall(data, dataSource)
+            entity.addEventListener("click", (pick) => {
+                console.log(pick);
+            })
+
+
+
+            const obj = {
+                "查找名为line的图层": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    console.log(layer);
+                },
+                "定位图层": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    viewer.zoomTo(layer);
+                },
+                "根据实体id获取实体": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    let entity = layer.entities.getById("wall-1");
+                    console.log(entity);
+                },
+                "实体显隐控制": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    let entity = layer.entities.getById("wall-1");
+                    entity.show = !entity.show;
+                },
+                "移除某一个实体": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    //根据id来移除
+                    //dataSource.entities.removeById("wall-1");
+                    //根据实体来移除
+                    let entity = dataSource.entities.getById("wall-1");
+                    layer.entities.remove(entity);
+
+                },
+                "图层显隐切换": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    layer.show = !layer.show;
+                },
+                "清空图层全部实体": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    layer.entities.removeAll();
+                },
+                "删除图层": function () {
+                    let layer = viewer.dataSources.getByName("wall")[0];
+                    viewer.dataSources.remove(layer, true);
+                }
+            }
+            const gui = new dat.GUI()
+            gui.add(obj, '查找名为line的图层') // 按钮
+            gui.add(obj, '定位图层') // 按钮
+            gui.add(obj, '根据实体id获取实体') // 按钮
+            gui.add(obj, '实体显隐控制') // 按钮
+            gui.add(obj, '移除某一个实体') // 按钮
+            gui.add(obj, '图层显隐切换') // 按钮
+            gui.add(obj, '清空图层全部实体') // 按钮
+            gui.add(obj, '删除图层') // 按钮
+        }
+
+        //初始化页面默认调用执行函数
+        const init = () => {
+            initMap();
+        }
+    </script>
+    <script type="module">
+        var script = document.getElementById('editJs').text;
+        eval(script);
+        init();
+    </script>
+</body>
+
+</html>

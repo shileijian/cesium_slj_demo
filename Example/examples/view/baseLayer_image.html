@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/public/Cesium/Cesium.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module" src="../../../src/scripts/gl3d/index-lt.js"></script>
+    <script id='editJs'>
+        const initMap = () => {
+            const parm = {
+                center: { lon: 120, lat: 30, height: 100000, pitch: -60, heading: 0 }//视角位置：经度-纬度-高度-俯仰角（负数从上往下看）-方位角
+            }
+            window.viewer = LT3D.initGisMap("cesiumContainer", parm);
+
+
+            /**
+             * 底图设为本地图片
+            */
+            LT3D.baseLayer.addLayer("local_image", {
+                isBaseLayer: true,
+                url: "/Example/examples/images/worldimage.png",
+            })
+        }
+
+
+
+
+
+        //初始化页面默认调用执行函数
+        const init = () => {
+            initMap();
+        }
+    </script>
+    <script type="module">
+        var script = document.getElementById('editJs').text;
+        eval(script);
+        init();
+    </script>
+</body>
+
+</html>

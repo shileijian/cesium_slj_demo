@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [120.02599349992343, 29.97044844659928, 3546.7957501658852],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        const baseLayer = map.addLayer('baseLayer')
+        const randomPosition = () => {
+          const lon = 119.99945590462963
+          const lat = 29.99440440400228
+          const x = Number((Math.random() * 0.05 + lon).toFixed(14))
+          const y = Number((Math.random() * 0.05 + lat).toFixed(14))
+          return [x,y,300]
+        }
+        function addMorePoint () {
+          for(let i = 0;i<1000;i++){
+            const marker = baseLayer.addPoint({
+              position: randomPosition(),
+              content: '这是内容' + i,
+              id: 'point*'
+            })
+            marker.addLabel({
+              text: '111'
+            })
+            marker.addLine()
+          }
+        }
+        addMorePoint()
+        function cluster () {
+          // fn是左键点击聚合之后 返回所有marker的content的内容
+          baseLayer.cluster((list) => {
+            console.log(list)
+          })
+        }
+        function clusterRemove () {
+          baseLayer.clusterRemove()
+        }
+        function show () {
+          baseLayer.show()
+        }
+        function hide () {
+          baseLayer.hide()
+        }
+        // 清空datasource里面的标注
+        function clear () {
+          baseLayer.clear()
+        }
+        function remove () {
+          baseLayer.remove()
+        }
+        const guiSetting = {
+          cluster,
+          clusterRemove,
+          show,
+          hide,
+          clear,
+          remove,
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'cluster').name('开始聚合')
+        gui.add(guiSetting, 'clusterRemove').name('取消聚合')
+        gui.add(guiSetting, 'show').name('显示整个图层')
+        gui.add(guiSetting, 'hide').name('隐藏整个图层')
+        gui.add(guiSetting, 'clear').name('清空整个图层')
+        gui.add(guiSetting, 'remove').name('销毁图层')
+    </script>
+</body>
+
+</html>

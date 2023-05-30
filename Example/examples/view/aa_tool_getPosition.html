@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        let handler = null
+        function get () {
+          map.getPosition((position) => {
+            console.log(position)
+          },false) // false是使用一次后销毁监听，默认true，需要手动销毁
+        }
+        function addhandler() {
+            handler =  map.getPosition((position) => {
+                console.log(position)
+            })
+        }
+        function removehandler () {
+            if (handler) {
+                handler.remove()
+                handler = null
+            }
+        }
+        const guiSetting = {
+          get,
+          addhandler,
+          removehandler
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'get').name('获取经纬度1')
+        gui.add(guiSetting, 'addhandler').name('获取经纬度2')
+        gui.add(guiSetting, 'removehandler').name('移除')
+    </script>
+</body>
+
+</html>

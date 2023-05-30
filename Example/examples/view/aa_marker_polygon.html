@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        add()
+        function add () {
+          const polygonMarker = map.addPolygon({
+            id:'polygon*',
+            position: [
+            [119.99674603537456, 30.010629643256852, 0],
+            [119.99721789036535, 30.002174807221554, 0],
+            [120.02173963288087, 30.005046202473277, 0]
+            ],
+            height: 1,
+            topHeight: 100, // 上底面。设置了就有高度
+            color: 'rgba(255,255,0,0.5)',
+            content: { text: '回调回调' }
+          })
+          polygonMarker.addEventListener((e) => {
+            console.log('面点击的回调', e)
+            console.log('面的经纬度', e.marker.getPosition())
+          })
+        }
+        function show () {
+          map.showMarker('polygon*')
+        }
+        function hide () {
+          map.hideMarker('polygon*')
+        }
+        function remove () {
+          map.removeMarker('polygon*')
+        }
+        const guiSetting = {
+          add,
+          show,
+          hide,
+          remove
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加矢量')
+        gui.add(guiSetting, 'show').name('显示')
+        gui.add(guiSetting, 'hide').name('隐藏')
+        gui.add(guiSetting, 'remove').name('移除')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm)
+        }
+        initMap()
+
+        const baseLayer = map.addLayer('baseLayer')
+        
+        function addPoint () {
+          const marker = baseLayer.addPoint({
+            position: [120,30,10],
+            id: 'point*'
+          })
+          marker.addLabel({
+            text: 'text',
+            font: '16px sans-serif',
+            color: 'rgba(255,255,255,1)',
+            offset: [10, 10], // 偏移量，像素 x, y 正数为右和下
+          })
+        }
+        function removePointMarker () {
+          baseLayer.removeMarker('point*')
+        }
+        function addLabel () {
+          baseLayer.addLabel({
+            id: 'label*',
+            position: [120,30,10],
+            text: '2423432'
+          })
+        }
+        function addLine () {
+          const lineMarker = baseLayer.addLine({
+            id:'line*',
+            position: [[120,30,0],[120.001,30.002,0]],
+            clampToGround: true, // 是否贴地，默认是true
+            width: 5,
+            color: 'rgba(255,255,0,1)',
+            content: { text: '回调回调' }
+          })
+          lineMarker.addEventListener((e) => {
+            console.log('线点击的回调', e)
+            console.log('线的经纬度', e.marker.getPosition())
+          })
+        }
+        function removeLine () {
+          baseLayer.removeMarker('line*')
+        }
+        function show () {
+          baseLayer.show()
+        }
+        function hide () {
+          baseLayer.hide()
+        }
+        // 清空datasource里面的标注
+        function clear () {
+          baseLayer.clear()
+        }
+        function remove () {
+          baseLayer.remove()
+        }
+        const guiSetting = {
+          addPoint,
+          addLine,
+          removeLine,
+          addLabel,
+          show,
+          hide,
+          clear,
+          remove,
+          removePointMarker
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'addPoint').name('添加点要素')
+        gui.add(guiSetting, 'removePointMarker').name('删除点要素')
+        gui.add(guiSetting, 'addLine').name('添加线要素')
+        gui.add(guiSetting, 'removeLine').name('删除线要素')
+        gui.add(guiSetting, 'addLabel').name('添加label')
+        gui.add(guiSetting, 'show').name('显示整个图层')
+        gui.add(guiSetting, 'hide').name('隐藏整个图层')
+        gui.add(guiSetting, 'clear').name('清空整个图层')
+        gui.add(guiSetting, 'remove').name('销毁图层')
+    </script>
+</body>
+
+</html>

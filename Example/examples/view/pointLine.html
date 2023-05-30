@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/Example/examples/js/dat.gui.min.js"></script>
+    <script src="/public/Cesium/Cesium.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module" src="../../../src/scripts/gl3d/index-lt.js"></script>
+    <script id='editJs'>
+        const initMap = async () => {
+            const parm = {
+                center: { lon: 120, lat: 30, height: 100000, pitch: -60, heading: 0 }//视角位置：经度-纬度-高度-俯仰角（负数从上往下看）-方位角
+            }
+            window.viewer = LT3D.initGisMap("cesiumContainer", parm);
+
+
+            /**
+             * 该方法生成两个实体，一个线实体，一个文字标注实体，不返回实体，故必须传入id。
+             * 生成的两个实体中，为避免id重复，线实体的id为“line_marker_” + id；标注实体id为：“label_marker_”+id；
+             * dataSource 图层，可选，不传入时自动生成新的图层，传入则将新创建的实体加入到该图层中
+            */
+            let dataSource = new Cesium.CustomDataSource("line");//创建一个名字叫line 的实体集合图层
+            viewer.dataSources.add(dataSource); //将该图层加入到地图中
+
+            var icon = {
+                width: 148,
+                height: 60,
+                url: '/Example/examples/images/text_bk.png',
+                offset: [0, 0]//图标偏移
+            }
+            var data = {
+                pointColor: "rgba(255,0,0,1)",//点颜色,不设置不显示改点
+                id: "marker-1",
+                position: [120, 30, 100],//经度纬度高度
+                content: { item: '测试数据' },//我是用来储层数据的，并传递
+            }
+
+            let lineStyle = {
+                lineColor: "rgba(255,255,0,1)",
+                lineWidth: 2,
+                lineLength: 100,//线条长度，可选，默认100
+                startHeight: 0,//线条起点高程数据，可选，可设置数值,"default"，不传则设置为获取到地面高程。
+            }
+
+            //不提供自动换行，文字过多需换行请手动截断
+            let labelStyle = {
+                bkIcon: icon,
+                label: [
+                    {
+                        text: "我是第一行",
+                        font: "normal bold 16px Microsoft YaHei",
+                        lineHeight: "24px",
+                        color: "#ffffff",
+                        textAlign: "center",
+                        top: "5px",//距离上一行增加间距
+                    }, {
+                        text: "我是第二行",
+                        font: "normal 12px Microsoft YaHei",
+                        lineHeight: "16px",
+                        color: "#f00",
+                        textAlign: "left",
+                        textIndent: "10px",
+                    },
+                ],
+            }
+            let collection = await LT3D.addVector.marker.addLineMarker(data, lineStyle, labelStyle, dataSource);
+            collection.addEventListener("click", (pick) => {
+                console.log(pick);
+            })
+
+            data.position = [120.5, 30, 100]
+            data.id = "marker-2"
+            collection = await LT3D.addVector.marker.addLineMarker(data, lineStyle, labelStyle, dataSource);
+            
+
+
+
+            const obj = {
+                "查找名为line的图层": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    console.log(layer);
+                },
+                "定位图层": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    viewer.zoomTo(layer);
+                },
+                "根据实体id获取实体": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    let entity = layer.entities.getById("line_marker_" + "marker-2");
+                    console.log(entity);
+                },
+                "实体显隐控制": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    let entity = layer.entities.getById("line_marker_" + "marker-2");
+                    entity.show = !entity.show;
+                },
+                "移除某一个实体": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    //根据id来移除
+                    //dataSource.entities.removeById("line_marker_" + "marker-2");
+                    //根据实体来移除
+                    let entity = dataSource.entities.getById("line_marker_" + "marker-2");
+                    layer.entities.remove(entity);
+
+                },
+                "图层显隐切换": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    layer.show = !layer.show;
+                },
+                "清空图层全部实体": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    layer.entities.removeAll();
+                },
+                "删除图层": function () {
+                    let layer = viewer.dataSources.getByName("line")[0];
+                    viewer.dataSources.remove(layer, true);
+                }
+            }
+            const gui = new dat.GUI()
+            gui.add(obj, '查找名为line的图层') // 按钮
+            gui.add(obj, '定位图层') // 按钮
+            gui.add(obj, '根据实体id获取实体') // 按钮
+            gui.add(obj, '实体显隐控制') // 按钮
+            gui.add(obj, '移除某一个实体') // 按钮
+            gui.add(obj, '图层显隐切换') // 按钮
+            gui.add(obj, '清空图层全部实体') // 按钮
+            gui.add(obj, '删除图层') // 按钮
+        }
+
+        //初始化页面默认调用执行函数
+        const init = () => {
+            initMap();
+        }
+    </script>
+    <script type="module">
+        var script = document.getElementById('editJs').text;
+        eval(script);
+        init();
+    </script>
+</body>
+
+</html>

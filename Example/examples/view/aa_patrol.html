@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        let patrol = null
+        function add () {
+          patrol = map.createPatrol({
+            position: [
+            [119.99674603537456, 30.010629643256852, 0],
+            [119.99721789036535, 30.002174807221554, 0],
+            [120.02173963288087, 30.005046202473277, 0]
+            ],
+            speed: 100,
+            model: {
+              url: '/Example/examples/model/消防车.gltf',
+              scale: 2
+            },
+            line: {
+              clampToGround: true,
+              width: 2,
+              color: '#fff'
+            }
+          })
+        }
+        const start = () => {
+          patrol.start()
+        }
+        const stop = () => {
+          patrol.stop()
+        }
+        const continued = () => {
+          patrol.continue()
+        }
+        const remove = () => {
+          patrol.remove()
+        }
+        const setView = () => {
+          patrol.setView()
+        }
+        const setView1 = () => {
+          patrol.setView(1)
+        }
+        const setView3 = () => {
+          patrol.setView(3)
+        }
+        const guiSetting = {
+          add,
+          start,
+          stop,
+          continued,
+          remove,
+          setView,
+          setView1,
+          setView3
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加要素')
+        gui.add(guiSetting, 'start').name('开始')
+        gui.add(guiSetting, 'stop').name('暂停')
+        gui.add(guiSetting, 'continued').name('继续')
+        gui.add(guiSetting, 'remove').name('移除')
+        gui.add(guiSetting, 'setView').name('随意视角')
+        gui.add(guiSetting, 'setView1').name('第一人称')
+        gui.add(guiSetting, 'setView3').name('第三人称')
+    </script>
+</body>
+
+</html>

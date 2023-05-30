@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        function drawLine () {
+          map.draw('line', (e) => {
+            console.log(e)
+          })
+        }
+        function drawPolygon () {
+          map.draw('polygon')
+        }
+        function drawCircle () {
+          map.draw('circle')
+        }
+        function clear () {
+            map.mapDraw.clear()
+        }
+        const guiSetting = {
+            drawLine,
+            drawPolygon,
+            drawCircle,
+            clear
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'drawLine').name('绘制线')
+        gui.add(guiSetting, 'drawPolygon').name('绘制面')
+        gui.add(guiSetting, 'drawCircle').name('绘制圆')
+        gui.add(guiSetting, 'clear').name('清空')
+    </script>
+</body>
+
+</html>

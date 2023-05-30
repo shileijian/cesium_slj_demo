@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <div id="cesiumTestDom" style="width: 100px;height: 100px;background: #000;color: #fff;">123</div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        let marker = null
+        add()
+        function add () {
+          marker = map.addDom({
+            dom: document.getElementById('cesiumTestDom'),
+            position: [120,30,10],
+            id: 'dom*',
+            showRange: [0,1500] // 显示区域
+          })
+        }
+        function show () {
+          // marker.show()
+          map.showMarker('dom*')
+        }
+        function hide () {
+          map.hideMarker('dom*')
+        }
+        function remove () {
+          // 这边移除的话你的dom元素也没了。需要重新创建一个
+          map.removeMarker('dom*')
+        }
+        const guiSetting = {
+          add,
+          show,
+          hide,
+          remove
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加要素')
+        gui.add(guiSetting, 'show').name('显示')
+        gui.add(guiSetting, 'hide').name('影藏')
+        gui.add(guiSetting, 'remove').name('移除')
+    </script>
+</body>
+
+</html>

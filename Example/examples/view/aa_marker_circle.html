@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    "destination": [
+                        110.47663122986691,
+                        21.057759757008824,
+                        841.1657158639108
+                    ],
+                    "orientation": {
+                        "heading": 176.478091672167,
+                        "pitch": -82.82177085951439,
+                        "roll": 180.0006302307511
+                    }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        add()
+        add1()
+        add3dtile()
+        function add () {
+          const circleMarker = map.addCircle({
+            id: 'circle*',
+            position: [110.47851615232508, 21.057590184932096, 99.86572262336267],
+            height: 60,
+            radius: 100,
+            color: 'rgba(0,255,99,0.5)',
+            // 宽度数值没啥用
+            outlineWidth: 50, // 边框宽度
+            outlineColor: 'rgba(255,0,0,1)'
+          })
+        }
+        function add1 () {
+          const circleMarker = map.addCircle({
+            id: 'circle*',
+            position: [110.48027912384504, 21.05748996893612, 81.96342931212985],
+            // 不传height就是贴地可以覆盖在上面但是边框失效
+            // height: 0,
+            radius: 100,
+            color: 'rgba(0,255,99,0.5)',
+            outlineWidth: 50, // 边框宽度
+            outlineColor: 'rgba(255,0,0,1)'
+          })
+        }
+        function add3dtile () {
+          const tile = map.addTileset('/湛江宝钢/3dtile/tileset.json')
+          console.log(tile)
+          map.viewer.flyTo(tile.tileset)
+        }
+        function show () {
+          map.showMarker('circle*')
+        }
+        function hide () {
+          map.hideMarker('circle*')
+        }
+        function remove () {
+          map.removeMarker('circle*')
+        }
+        const guiSetting = {
+          add,
+          add3dtile,
+          show,
+          hide,
+          remove
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加矢量')
+        gui.add(guiSetting, 'add3dtile').name('添加矢量')
+        gui.add(guiSetting, 'show').name('显示')
+        gui.add(guiSetting, 'hide').name('隐藏')
+        gui.add(guiSetting, 'remove').name('移除')
+    </script>
+</body>
+
+</html>

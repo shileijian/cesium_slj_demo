@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <script src="/Example/examples/js/dat.gui.min.js"></script>
+    <script src="/public/Cesium/Cesium.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module" src="../../../src/scripts/gl3d/index-lt.js"></script>
+    <script id='editJs'>
+        const initMap = async () => {
+            const parm = {
+                center: { lon: 120, lat: 30, height: 100000, pitch: -60, heading: 0 }//视角位置：经度-纬度-高度-俯仰角（负数从上往下看）-方位角
+            }
+            let viewer = LT3D.initGisMap("cesiumContainer");
+            let tileset = await LT3D.model.add3DTiles("http://resource.dvgis.cn/data/3dtiles/ljz/tileset.json")
+            viewer.flyTo(tileset[0]);
+            
+            //开启阴影
+            viewer.scene.globe.enableLighting = true;
+            viewer.shadows = true
+
+            const timeChange = (value) => {
+                let time = LT3D.dateFormat(new Date(), "yyyy/MM/dd");
+                if (value) {
+                    time = time + " " + value + ":00:00";
+                } else {
+                    time = LT3D.dateFormat(new Date(), "yyyy/MM/dd hh" + ":00:00");
+                }
+                viewer.terrainShadows = Cesium.ShadowMode.RECEIVE_ONLY
+                viewer.shadowMap.darkness = 0.4 //阴影透明度--越大越透明
+                // 改变时间设置光照效果
+                var utc = Cesium.JulianDate.fromDate(new Date(time));
+                // //北京时间=UTC+8=GMT+8
+                viewer.clockViewModel.currentTime = Cesium.JulianDate.addHours(utc, 0, new Cesium.JulianDate());
+            }
+            
+            timeChange();
+            const gui = new dat.GUI()
+            let obj = {
+                time: new Date().getHours()
+            }
+            gui.add(obj, 'time', 0, 24).step(1).onChange(timeChange)
+
+
+
+            // top.window.viewer = viewer;
+        }
+
+        //初始化页面默认调用执行函数
+        const init = () => {
+            initMap();
+        }
+    </script>
+    <script type="module">
+        var script = document.getElementById('editJs').text;
+        eval(script);
+        init();
+    </script>
+</body>
+
+</html>

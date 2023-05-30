@@ -1,0 +1,23 @@
+{
+  "id": "3883200",
+  "name": "gl3d",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "19483363",
+      "name": "实体按键",
+      "font_class": "fa-vector",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "21587796",
+      "name": " 图层",
+      "font_class": "fa-object-group",
+      "unicode": "e619",
+      "unicode_decimal": 58905
+    }
+  ]
+}
