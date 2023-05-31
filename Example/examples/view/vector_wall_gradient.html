@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="/Example/examples/css/reset.css">
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
     <script src="/Example/examples/js/dat.gui.min.js"></script>
     <script src="/public/Cesium/Cesium.js"></script>
 </head>
@@ -31,7 +31,7 @@
 
             let material = new Cesium.ImageLineMaterialProperty(
                 {
-                    image: "/Example/examples/images/wall.png",
+                    image: "../../Example/examples/images/wall.png",
                     duration: 3000,//动画一轮所需时间
                     color: "rgba(255, 0, 0,1)",
                     stretching: true,//是否允许图片变形，可选，默认允许,（禁止变形后续迭代，待优化）
@@ -55,7 +55,7 @@
             var alp = 1;
             var num = 0;
             entity.wall.material = new Cesium.ImageMaterialProperty({
-                image: "/Example/examples/images/colors2.png",
+                image: "../../Example/examples/images/colors2.png",
                 transparent: true,
                 color: new Cesium.CallbackProperty(function () {
                     if ((num % 2) === 0) {
