@@ -13,7 +13,7 @@
 <body>
     <div id="cesiumContainer"></div>
     <video id="daolu" muted autoplay loop crossorigin controls>
-        <source src="/Example/examples/media/video.mp4" type="video/mp4"/>
+        <source src="../../Example/examples/media/video.mp4" type="video/mp4"/>
     </video>
     <script type="module">
         const initMap = () => {
@@ -35,7 +35,7 @@
             window.map = new slj3d("cesiumContainer", parm);
         }
         function add3dtile () {
-          const tile = map.addTileset('/湛江宝钢/3dtile/tileset.json')
+          const tile = map.addTileset('../../湛江宝钢/3dtile/tileset.json')
           console.log(tile)
           map.viewer.flyTo(tile.tileset)
         }
