@@ -32,9 +32,9 @@
             window.map = new slj3d("cesiumContainer", parm);
         }
         initMap()
+        add3dtile()
         add()
         add1()
-        add3dtile()
         function add () {
           const circleMarker = map.addCircle({
             id: 'circle*',
@@ -46,11 +46,12 @@
             outlineWidth: 50, // 边框宽度
             outlineColor: 'rgba(255,0,0,1)'
           })
+          console.log('circleMarker',circleMarker)
         }
         function add1 () {
           const circleMarker = map.addCircle({
             id: 'circle*',
-            position: [110.48027912384504, 21.05748996893612, 81.96342931212985],
+            position: [110.48027912384504, 21.05748996893612, 41.96342931212985],
             // 不传height就是贴地可以覆盖在上面但是边框失效
             // height: 0,
             radius: 100,
@@ -59,8 +60,20 @@
             outlineColor: 'rgba(255,0,0,1)'
           })
         }
+        function getHeight () {
+          // 110.4748613110738, 21.057536756382362
+          let height = map.viewer.scene.sampleHeight(
+            new Cesium.Cartographic(
+              Cesium.Math.toRadians(110.4748613110738),//转换成弧度
+              Cesium.Math.toRadians(21.057536756382362),//弧度
+            )
+          );
+        }
         function add3dtile () {
-          const tile = map.addTileset('/湛江宝钢/3dtile/tileset.json')
+          const tile = map.addTileset({
+            url:'../../湛江宝钢/3dtile/tileset.json',
+            height: 60,
+          })
           console.log(tile)
           map.viewer.flyTo(tile.tileset)
         }
@@ -78,7 +91,8 @@
           add3dtile,
           show,
           hide,
-          remove
+          remove,
+          getHeight
         }
         const gui = new dat.GUI()
         gui.add(guiSetting, 'add').name('添加矢量')
@@ -86,6 +100,7 @@
         gui.add(guiSetting, 'show').name('显示')
         gui.add(guiSetting, 'hide').name('隐藏')
         gui.add(guiSetting, 'remove').name('移除')
+        gui.add(guiSetting, 'getHeight').name('getHeight')
     </script>
 </body>
 

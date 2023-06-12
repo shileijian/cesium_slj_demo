@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        let marker
+        addPoint()
+        function addPoint () {
+            marker = map.addPoint({
+                position: [120.001,30,10],
+                id: '123*',
+                url: '../../Example/examples/images/marker_icon.png',
+                scale: 2, // 缩放倍数，设置了width和height这个就会失效
+                content: { text: '213123' }, // 各种事件回调返回
+                editCallBack: (e) => {
+                    console.log('编辑结束的回调函数', e)
+                }
+            })
+            marker.setMenu({
+                edit: true
+            })
+        }
+        function editPoint () {
+            marker.editStart()
+        }
+        function editPointEnd () {
+            marker.editEnd()
+        }
+        const guiSetting = {
+          addPoint,
+          editPoint,
+          editPointEnd
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'addPoint').name('添加点')
+        gui.add(guiSetting, 'editPoint').name('编辑点')
+        gui.add(guiSetting, 'editPointEnd').name('结束编辑点')
+    </script>
+</body>
+
+</html>

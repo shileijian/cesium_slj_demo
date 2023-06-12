@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        const handler = new Cesium.ScreenSpaceEventHandler(map.viewer.scene.canvas)
+        handler.setInputAction((e) => {
+          const Cartesian3 = map.viewer.scene.camera.pickEllipsoid(e.position, map.viewer.scene.globe.ellipsoid)
+          console.log(Cartesian3)
+        },Cesium.ScreenSpaceEventType.LEFT_CLICK)
+        function subtract () {
+          const c1 = {x: -2763751.462271311, y: 4787541.471939046, z: 3170803.875758448}
+          const c2 = {x: -2764278.44181939, y: 4787707.005382258, z: 3170099.233228728}
+          console.log(Cesium.Cartesian3.subtract(c1,c2,new Cesium.Cartesian3()))
+        }
+        const guiSetting = {
+          subtract
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'subtract').name('subtract')
+    </script>
+</body>
+
+</html>

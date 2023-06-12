@@ -17,7 +17,7 @@
             const parm = {
                 defaultView: {
                     duration: 3,
-                    destination: [120,30,100],
+                    destination: [119.99990333870964, 29.99923137281575, 99.7526020743565],
                     orientation: { heading: 0, pitch: -45, roll: 0 }
                 }
             }
@@ -28,7 +28,7 @@
         function add () {
           const lineMarker = map.addLine({
             id:'line*',
-            position: [[120,30,0],[120.001,30.002,0]],
+            position: [[120,30,0],[120.0001,30,0],[120.0001,30.0001,0]],
             clampToGround: true, // 是否贴地，默认是true
             width: 5,
             color: 'rgba(255,255,0,1)',

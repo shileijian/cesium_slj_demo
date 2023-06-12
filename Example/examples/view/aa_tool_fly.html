@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        addPoint()
+        function addPoint () {
+          map.addPoint({
+            position: [120,30,10],
+            id: 'point*'
+          })
+        }
+        // 相机飞行，这边的参数都是用于相机的  , 参数用map.getCameraGesture() 获取
+        function flyTo () {
+          map.flyTo(
+            {
+              "destination": [
+                  119.99414566617074,
+                  29.999512477905277,
+                  535.3259169722519
+              ],
+              "orientation": {
+                  "heading": 76.82479034099207, // 航向角 ,正北为0，顺时针计算，正南为180度或者-180度
+                  "pitch": -42.6951076329109, // 俯仰角，负数为向下 往正下方看为-90度，往正上方看为90度
+                  "roll": 0.0019424924392708982 // 翻滚角
+              },
+              duration: 3 // 过渡时间
+            }
+          )
+        }
+        // 这个是看向点位，
+        function flyToPoint () {
+          map.flyToPoint({
+            position: [120,30,10], // 必填
+            heading: 0, // 航向角 ,正北为0，顺时针计算，正南为180度或者-180度。不写参数默认为当前相机航向角
+            pitch: -30, // 俯仰角，负数为向下 往正下方看为-90度，往正上方看为90度.不写参数默认为当前相机航向角
+            duration: 2, // 过渡时间，默认2秒
+            distance: 200, // 距离（米）。默认100米
+          })
+        }
+        const guiSetting = {
+          flyTo,
+          flyToPoint
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'flyTo').name('flyTo')
+        gui.add(guiSetting, 'flyToPoint').name('flyToPoint')
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        addPoint()
+        function addPoint () {
+          for(let i = 0;i<=10;i++){
+            map.addPoint({
+              position: [120,30,10],
+              id: 'point1*'
+            })
+          }
+          for(let i = 0;i<=10;i++){
+            map.addPoint({
+              position: [120,30,10],
+              id: 'point2*'
+            })
+          }
+        }
+        // 获取第一个匹配的marker
+        function getMarkerByid () {
+          console.log(map.getMarkerByid('point1*'))
+        }
+        // 获取匹配的所有
+        function getMarkersByid () {
+          console.log(map.getMarkersByid('point2*'))
+        }
+        const guiSetting = {
+          getMarkerByid,
+          getMarkersByid
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'getMarkerByid').name('getMarkerByid')
+        gui.add(guiSetting, 'getMarkersByid').name('getMarkersByid')
+    </script>
+</body>
+
+</html>

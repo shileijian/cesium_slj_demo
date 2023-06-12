@@ -18,6 +18,12 @@ var exampleConfig = {
                         name_en: "testone",
                         thumbnail: "notice.png",
                         fileName: "testone",
+                    },
+                    {
+                        name: "test_cartesain3",
+                        name_en: "test_cartesain3",
+                        thumbnail: "notice.png",
+                        fileName: "test_cartesain3",
                     }
                 ]
             }
@@ -34,43 +40,43 @@ var exampleConfig = {
                     {
                         name: "点基本用法",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_point.png",
                         fileName: "aa_marker_point"
                     },
                     {
                         name: "点接地线",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_point_addLine.png",
                         fileName: "aa_marker_point_addLine"
                     },
                     {
                         name: "点位聚合",
                         name_en: "4",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_point_cluster.png",
                         fileName: "aa_marker_point_cluster"
                     },
                     {
                         name: "文本",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_label.png",
                         fileName: "aa_marker_label"
                     },
                     {
                         name: "颜色点位",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_colorPoint.png",
                         fileName: "aa_marker_colorPoint"
                     },
                     {
                         name: "dom冒泡",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_dom.png",
                         fileName: "aa_marker_dom"
                     },
                     {
                         name: "火焰粒子",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_particle_flame.png",
                         fileName: "aa_particle_flame"
                     },
                 ]
@@ -82,7 +88,7 @@ var exampleConfig = {
                     {
                         name: "线基本用法",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_line.png",
                         fileName: "aa_marker_line"
                     },
                 ]
@@ -94,43 +100,43 @@ var exampleConfig = {
                     {
                         name: "面基本用法",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_polygon.png",
                         fileName: "aa_marker_polygon"
                     },
-                    {
-                        name: "贴地面",
-                        name_en: "1",
-                        thumbnail: "notice.png",
-                        fileName: "aa_marker_polygon1"
-                    },
+                    // {
+                    //     name: "贴地面",
+                    //     name_en: "1",
+                    //     thumbnail: "notice.png",
+                    //     fileName: "aa_marker_polygon1"
+                    // },
                     {
                         name: "墙",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_primitives_wall.png",
                         fileName: "aa_primitives_wall"
                     },
                     {
                         name: "矩形",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_rectangle.png",
                         fileName: "aa_marker_rectangle"
                     },
                     {
                         name: "热力图test",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_heatmap_test.png",
                         fileName: "aa_heatmap_test"
                     },
                     {
                         name: "热力图(待优化)",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_heatmap.png",
                         fileName: "aa_heatmap"
                     },
                     {
                         name: "视频融合",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_videoFusion.png",
                         fileName: "aa_videoFusion"
                     },
                 ]
@@ -142,19 +148,19 @@ var exampleConfig = {
                     {
                         name: "圆基本用法",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_marker_circle.png",
                         fileName: "aa_marker_circle"
                     },
                     {
                         name: "扩散圆",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_dynamic_addSpreadCircle.png",
                         fileName: "aa_dynamic_addSpreadCircle"
                     },
                     {
                         name: "旋转圆",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_dynamic_addRotateCircle.png",
                         fileName: "aa_dynamic_addRotateCircle"
                     },
                 ]
@@ -166,8 +172,20 @@ var exampleConfig = {
                     {
                         name: "基本用法",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_draw_line.png",
                         fileName: "aa_draw_line"
+                    },
+                ]
+            },
+            "edit": {
+                name: "编辑类",
+                name_en: "5",
+                content: [
+                    {
+                        name: "基本用法",
+                        name_en: "1",
+                        thumbnail: "aa_edit_base.png",
+                        fileName: "aa_edit_base"
                     },
                 ]
             },
@@ -178,7 +196,7 @@ var exampleConfig = {
                     {
                         name: "巡更",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_patrol.png",
                         fileName: "aa_patrol"
                     },
                 ]
@@ -190,7 +208,7 @@ var exampleConfig = {
                     {
                         name: "加载3dTile",
                         name_en: "1",
-                        thumbnail: "notice.png",
+                        thumbnail: "aa_3dTile.png",
                         fileName: "aa_3dTile"
                     },
                 ]
@@ -216,6 +234,18 @@ var exampleConfig = {
                         name_en: "3",
                         thumbnail: "notice.png",
                         fileName: "aa_tool_getPosition"
+                    },
+                    {
+                        name: "几种飞行",
+                        name_en: "3",
+                        thumbnail: "notice.png",
+                        fileName: "aa_tool_fly"
+                    },
+                    {
+                        name: "根据id获取marker",
+                        name_en: "3",
+                        thumbnail: "notice.png",
+                        fileName: "aa_tool_getMarker"
                     },
                 ]
             },
