@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+    let downFn = null
+    let upFn = null
+    // 自由 镜头 or 漫游 
+    const freeden = () => {
+      var ellipsoid = map.viewer.scene.globe.ellipsoid;
+
+      map.viewer.scene.screenSpaceCameraController.enableRotate = false;
+      map.viewer.scene.screenSpaceCameraController.enableTranslate = false;
+      map.viewer.scene.screenSpaceCameraController.enableZoom = false;
+      map.viewer.scene.screenSpaceCameraController.enableTilt = false;
+      map.viewer.scene.screenSpaceCameraController.enableLook = false;
+
+      var startMousePosition;
+      var mousePosition;
+      var flags = {
+          looking : false,
+          moveForward : false,
+          moveBackward : false,
+          moveUp : false,
+          moveDown : false,
+          moveLeft : false,
+          moveRight : false
+      };
+
+      map.viewer.screenSpaceEventHandler.setInputAction(function(movement) {
+          flags.looking = true;
+          mousePosition = startMousePosition = Cesium.Cartesian3.clone(movement.position);
+      }, Cesium.ScreenSpaceEventType.LEFT_DOWN);
+
+      map.viewer.screenSpaceEventHandler.setInputAction(function(movement) {
+          mousePosition = movement.endPosition;
+      }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+
+      map.viewer.screenSpaceEventHandler.setInputAction(function(position) {
+          flags.looking = false;
+      }, Cesium.ScreenSpaceEventType.LEFT_UP);
+
+      function getFlagForKeyCode(keyCode) {
+          switch (keyCode) {
+          case 'W'.charCodeAt(0):
+              return 'moveForward';
+          case 'S'.charCodeAt(0):
+              return 'moveBackward';
+          case 'Q'.charCodeAt(0):
+              return 'moveUp';
+          case 'E'.charCodeAt(0):
+              return 'moveDown';
+          case 'D'.charCodeAt(0):
+              return 'moveRight';
+          case 'A'.charCodeAt(0):
+              return 'moveLeft';
+          default:
+              return undefined;
+          }
+      }
+
+      document.addEventListener('keydown', downFn = function(e){
+        var flagName = getFlagForKeyCode(e.keyCode);
+          if (typeof flagName !== 'undefined') {
+              flags[flagName] = true;
+          }
+      }, false);
+
+      document.addEventListener('keyup', upFn =(e)=>{
+        var flagName = getFlagForKeyCode(e.keyCode);
+          if (typeof flagName !== 'undefined') {
+              flags[flagName] = false;
+          }
+      }, false);
+
+      map.viewer.clock.onTick.addEventListener(function(clock) {
+          var camera = map.viewer.camera;
+          // 镜头旋转
+          if (flags.looking) {
+              var width = map.viewer.canvas.clientWidth;
+              var height = map.viewer.canvas.clientHeight;
+
+              var lookFactor =0.06;
+              var x = (mousePosition.x - startMousePosition.x) / width;
+              var y = -(mousePosition.y - startMousePosition.y) / height;
+              
+              camera.setView({
+                orientation: {
+                    heading : camera.heading + x*lookFactor, 
+                    pitch : camera.pitch + y*lookFactor,    
+                    roll : 0.0                             
+                }
+              })
+          }
+
+          // 根据高度来决定镜头移动的速度
+          var cameraHeight = ellipsoid.cartesianToCartographic(camera.position).height;
+          var moveRate = 10
+        //   console.log(Cesium.Cartesian3.dot(map.viewer.camera.right,map.viewer.camera.up))
+        // 前进
+        let cameraForward = new Cesium.Cartesian3()
+        Cesium.Cartesian3.cross(Cesium.Cartesian3.normalize(map.viewer.camera.position, new Cesium.Cartesian3()), camera.right, cameraForward);
+        Cesium.Cartesian3.normalize(cameraForward, cameraForward);
+          if (flags.moveForward) {
+              camera.move(cameraForward, moveRate)
+            //   camera.moveForward(moveRate);
+          }
+          if (flags.moveBackward) {
+            camera.move(Cesium.Cartesian3.negate(cameraForward,new Cesium.Cartesian3()),moveRate)
+            //   camera.moveBackward(moveRate);
+          }
+          if (flags.moveUp) {
+              camera.moveUp(moveRate);
+          }
+          if (flags.moveDown) {
+              camera.moveDown(moveRate);
+          }
+          if (flags.moveLeft) {
+              camera.moveLeft(moveRate);
+          }
+          if (flags.moveRight) {
+              camera.moveRight(moveRate);
+          }
+      });
+}
+    // 退出漫游
+    function quit () {
+      map.viewer.scene.screenSpaceCameraController.enableRotate = true;
+      map.viewer.scene.screenSpaceCameraController.enableTranslate = true;
+      map.viewer.scene.screenSpaceCameraController.enableZoom = true;
+      map.viewer.scene.screenSpaceCameraController.enableTilt = true;
+      map.viewer.scene.screenSpaceCameraController.enableLook = true;
+      map.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_DOWN)
+      map.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE)
+      map.viewer.screenSpaceEventHandler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_UP)
+      document.removeEventListener('keydown',downFn,false)
+      document.removeEventListener('keyup',upFn,false)
+    }
+    function getcanshu () {
+        console.log(Cesium.Cartesian3.normalize(map.viewer.camera.position, new Cesium.Cartesian3()))
+        console.log(map.viewer.camera.up)
+    }
+    let list = []
+    let timer = null
+    let RecordingFn = function () {
+        list.push({
+            destination: map.viewer.camera.position,
+            // duration: 0,
+            // heading: map.viewer.camera.heading,
+            //     pitch: map.viewer.camera.pitch,
+            //     roll: map.viewer.camera.roll
+            orientation: {
+                heading: map.viewer.camera.heading,
+                pitch: map.viewer.camera.pitch,
+                roll: map.viewer.camera.roll
+            }
+        })
+    }
+    // 开始 录制
+    function startRecording () {
+        list = []
+        map.viewer.clock.onTick.addEventListener(RecordingFn = function () {
+            let position = JSON.stringify(map.viewer.camera.positionWC)
+            console.log(position)
+        list.push({
+            destination: JSON.parse(position),
+            duration: 0,
+            // heading: map.viewer.camera.heading,
+            //     pitch: map.viewer.camera.pitch,
+            //     roll: map.viewer.camera.roll
+            orientation: {
+                heading: map.viewer.camera.heading,
+                pitch: map.viewer.camera.pitch,
+                roll: map.viewer.camera.roll
+            }
+        })
+    })
+    }
+    function endRecording () {
+        map.viewer.clock.onTick.removeEventListener(RecordingFn)
+    }
+    function getList () {
+        console.log(list)
+    }
+    function run () {
+        let index = 0
+        
+        let fn = () => {
+            index+=1
+            if (index>=list.length) {
+                map.viewer.clock.onTick.removeEventListener(fn)
+                return
+            }
+        map.viewer.camera.setView(list[index])
+        }
+        map.viewer.clock.onTick.addEventListener(fn)
+    }
+const guiSetting = {
+          freeden,
+          quit,
+          getcanshu,
+          startRecording,
+          endRecording,
+          getList,
+          run
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'freeden').name('键盘视角')
+        gui.add(guiSetting, 'quit').name('退出键盘视角')
+        gui.add(guiSetting, 'getcanshu').name('getcanshu')
+        gui.add(guiSetting, 'startRecording').name('开始录制')
+        gui.add(guiSetting, 'endRecording').name('结束录制')
+        gui.add(guiSetting, 'getList').name('getList')
+        gui.add(guiSetting, 'run').name('run')
+    </script>
+</body>
+
+</html>

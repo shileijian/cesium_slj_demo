@@ -36,14 +36,19 @@
         function remove () {
           tile.remove()
         }
+        function animate () {
+          tile.animate()
+        }
         const guiSetting = {
           height: 1,
           add,
+          animate,
           remove
         }
         const gui = new dat.GUI()
         gui.add(guiSetting, "height", 0, 100, 1).name("高度").onChange((v) => { tile.height = v })
         gui.add(guiSetting, 'add').name('添加要素')
+        gui.add(guiSetting, 'animate').name('animate')
         gui.add(guiSetting, 'remove').name('移除')
     </script>
 </body>

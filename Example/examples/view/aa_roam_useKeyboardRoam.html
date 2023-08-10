@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        let roam = null
+        let record = map.recordCamera()
+        let cameraPlay = map.cameraFlyPlay()
+        function useKeyboardRoam () {
+            roam = map.useKeyboardRoam()
+        }
+        function KeyboardRoamremove () {
+            roam.remove()
+        }
+        function recordStart () {
+            record.start()
+        }
+        function recordEnd () {
+            record.end()
+            console.log(record.getList())
+        }
+        function recordClear () {
+            record.clear()
+            console.log(record.getList())
+        }
+        function play () {
+            cameraPlay.list = record.getList()
+            cameraPlay.endCallback = () => {
+                console.log('播放结束了')
+            }
+            // 百分比 ，index
+            cameraPlay.percentCallback = (percent,index) => {
+                console.log(percent,index)
+            }
+            cameraPlay.play()
+        }
+        function resetPlay () {
+            cameraPlay.reset()
+            cameraPlay.list = record.getList()
+            cameraPlay.play()
+        }
+        function stop () {
+            cameraPlay.stop()
+        }
+        
+        const guiSetting = {
+           useKeyboardRoam,
+           KeyboardRoamremove,
+           recordStart,
+           recordEnd,
+           recordClear,
+           play,
+           resetPlay,
+           stop
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'useKeyboardRoam').name('使用键盘漫游')
+        gui.add(guiSetting, 'KeyboardRoamremove').name('退出键盘漫游')
+        gui.add(guiSetting, 'recordStart').name('开始录制')
+        gui.add(guiSetting, 'recordEnd').name('结束录制')
+        gui.add(guiSetting, 'recordClear').name('清空录制')
+        gui.add(guiSetting, 'play').name('播放')
+        gui.add(guiSetting, 'resetPlay').name('从头播放')
+        gui.add(guiSetting, 'stop').name('暂停播放')
+    </script>
+</body>
+
+</html>

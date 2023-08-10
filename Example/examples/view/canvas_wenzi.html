@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script> -->
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <!-- <canvas id="myCanvas" width="144" height="34" style="border: 1px solid red;"></canvas> -->
+    <script>
+        // var canvas = document.getElementById('myCanvas');
+        var canvas = document.createElement('canvas')
+        canvas.width = 148
+        canvas.height = 34
+        document.getElementById('cesiumContainer').appendChild(canvas)
+        var ctx=canvas.getContext("2d")
+        ctx.fillStyle="rgba(0,0,0,0.3)";
+    ctx.fillRect(0,0,150,100)
+    ctx.fillStyle = '#000'
+        ctx.font="bold 30px Arial";
+        ctx.fillText("FLOOR 12",0,28)
+    </script>
+    <script type="module">
+        
+        function add () {
+          
+        }
+        const guiSetting = {
+          add
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加要素')
+    </script>
+</body>
+
+</html>

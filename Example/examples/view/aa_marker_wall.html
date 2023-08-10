@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../../Example/examples/css/reset.css">
+    <script src="../../config/spMap.js"></script>
+</head>
+
+<body>
+    <div id="cesiumContainer"></div>
+    <video id="daolu" muted autoplay loop crossorigin controls>
+      <source src="../../Example/examples/media/video.mp4" type="video/mp4"/>
+  </video>
+    <script type="module">
+        const initMap = () => {
+            const parm = {
+                defaultView: {
+                    duration: 3,
+                    destination: [119.99945590462963, 29.99440440400228, 505.8659094693903],
+                    orientation: { heading: 0, pitch: -40, roll: 0 }
+                }
+            }
+            window.map = new slj3d("cesiumContainer", parm);
+        }
+        initMap()
+        add()
+        addImage()
+        addVideo()
+        function add () {
+          map.addWall({
+            id: 'wall*',
+            position: [[120,30,10],[120.0001,30,10],[120.0001,30.0001,10]],
+            maximumHeights: 50,
+            maximumHeights: 10,
+            color: '#fff'
+          })
+        }
+        function addImage () {
+          map.addWall({
+            id: 'wall*',
+            position: [[120.0001,30,10],[120.0002,30,10],[120.0002,30.0001,10]],
+            maximumHeights: 50,
+            maximumHeights: 10,
+            image: {
+              url: '../../Example/examples/images/rotatebg.png',
+              repeat: [10,10] // 重复，x方向，y方向
+            }
+          })
+        }
+        function addVideo () {
+          const dom = document.getElementById('daolu')
+          dom.play()
+          map.addWall({
+            id: 'wall*',
+            position: [
+            [120.00008507531831, 29.999802266065146, 0.030863794038847408],
+            [120.00027354002783, 29.999946297287266, 0.030812507743292753],
+            [120.00041143574377, 30.00022031522028, 0.032137419730187966]
+            ],
+            maximumHeights: 70,
+            maximumHeights: 10,
+            video: {
+              url: "../../Example/examples/media/video.mp4",
+              autoplay: true
+              // repeat: [10,10]
+            }
+          })
+        }
+        const guiSetting = {
+          add,
+          addImage,
+          addVideo
+        }
+        const gui = new dat.GUI()
+        gui.add(guiSetting, 'add').name('添加要素')
+        gui.add(guiSetting, 'addImage').name('addImage')
+        gui.add(guiSetting, 'addVideo').name('addVideo')
+    </script>
+</body>
+
+</html>

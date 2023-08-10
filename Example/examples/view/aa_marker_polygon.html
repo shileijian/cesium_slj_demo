@@ -43,6 +43,28 @@
             console.log('面的经纬度', e.marker.getPosition())
           })
         }
+        function fanxuanPolygon () {
+          const polygonMarker = map.addPolygon({
+            id:'polygon*',
+            position: [
+              [0,0,0],
+              [0,90,0],
+              [179,90,0],
+              [179,0,0]
+            ],
+            holes: [
+              {
+                position: [
+                  [120.00493784111386, 30.000371717164835, -0.835389838575402],
+                  [120.00275265916898, 29.993789263677417, -0.7488045119532735],
+                  [120.01593332365782, 29.993360781399733, -0.7824122319188496]
+                ]
+              }
+            ],
+            color: 'rgba(255,255,0,0.5)',
+            content: { text: '回调回调' }
+          })
+        }
         function show () {
           map.showMarker('polygon*')
         }
@@ -56,10 +78,12 @@
           add,
           show,
           hide,
-          remove
+          remove,
+          fanxuanPolygon
         }
         const gui = new dat.GUI()
         gui.add(guiSetting, 'add').name('添加矢量')
+        gui.add(guiSetting, 'fanxuanPolygon').name('反选')
         gui.add(guiSetting, 'show').name('显示')
         gui.add(guiSetting, 'hide').name('隐藏')
         gui.add(guiSetting, 'remove').name('移除')

@@ -24,13 +24,14 @@
             window.map = new slj3d("cesiumContainer", parm);
         }
         initMap()
+        let lineMarker = undefined
         add()
         function add () {
-          const lineMarker = map.addLine({
+          lineMarker = map.addLine({
             id:'line*',
-            position: [[120,30,0],[120.0001,30,0],[120.0001,30.0001,0]],
-            clampToGround: true, // 是否贴地，默认是true
-            width: 5,
+            position: [[120,30,10],[120.0001,30,10],[120.0001,30.0001,10]],
+            clampToGround: false, // 是否贴地，默认是true
+            width: 3,
             color: 'rgba(255,255,0,1)',
             content: { text: '回调回调' }
           })
@@ -38,6 +39,12 @@
             console.log('线点击的回调', e)
             console.log('线的经纬度', e.marker.getPosition())
           })
+        }
+        function setArrow () {
+          lineMarker.setArrow()
+        }
+        function setFlow () {
+          lineMarker.setFlow()
         }
         function show () {
           map.showMarker('line*')
@@ -63,10 +70,14 @@
           show,
           hide,
           remove,
-          getMarkerByid
+          getMarkerByid,
+          setArrow,
+          setFlow
         }
         const gui = new dat.GUI()
         gui.add(guiSetting, 'add').name('添加矢量')
+        gui.add(guiSetting, 'setArrow').name('箭头线')
+        gui.add(guiSetting, 'setFlow').name('流动线')
         gui.add(guiSetting, 'show').name('显示')
         gui.add(guiSetting, 'hide').name('隐藏')
         gui.add(guiSetting, 'remove').name('移除')
