@@ -20,10 +20,22 @@ var exampleConfig = {
                         fileName: "testone",
                     },
                     {
+                        name: "键盘控制视角",
+                        name_en: "freedenCamera",
+                        thumbnail: "notice.png",
+                        fileName: "freedenCamera",
+                    },
+                    {
                         name: "test_cartesain3",
                         name_en: "test_cartesain3",
                         thumbnail: "notice.png",
                         fileName: "test_cartesain3",
+                    },
+                    {
+                        name: "canvas_arraw",
+                        name_en: "canvas_arraw",
+                        thumbnail: "notice.png",
+                        fileName: "canvas_arraw",
                     }
                 ]
             }
@@ -110,7 +122,13 @@ var exampleConfig = {
                     //     fileName: "aa_marker_polygon1"
                     // },
                     {
-                        name: "墙",
+                        name: "墙entity",
+                        name_en: "1",
+                        thumbnail: "aa_marker_wall.png",
+                        fileName: "aa_marker_wall"
+                    },
+                    {
+                        name: "墙primitives",
                         name_en: "1",
                         thumbnail: "aa_primitives_wall.png",
                         fileName: "aa_primitives_wall"
@@ -120,6 +138,12 @@ var exampleConfig = {
                         name_en: "1",
                         thumbnail: "aa_marker_rectangle.png",
                         fileName: "aa_marker_rectangle"
+                    },
+                    {
+                        name: "平面",
+                        name_en: "1",
+                        thumbnail: "aa_marker_plane.png",
+                        fileName: "aa_marker_plane"
                     },
                     {
                         name: "热力图test",
@@ -199,6 +223,12 @@ var exampleConfig = {
                         thumbnail: "aa_patrol.png",
                         fileName: "aa_patrol"
                     },
+                    {
+                        name: "键盘漫游",
+                        name_en: "1",
+                        thumbnail: "aa_patrol.png",
+                        fileName: "aa_roam_useKeyboardRoam"
+                    },
                 ]
             },
             "tile": {
@@ -247,6 +277,12 @@ var exampleConfig = {
                         thumbnail: "notice.png",
                         fileName: "aa_tool_getMarker"
                     },
+                    {
+                        name: "添加坐标轴",
+                        name_en: "3",
+                        thumbnail: "notice.png",
+                        fileName: "aa_tool_addCoordinateAxis"
+                    },
                 ]
             },
         },
@@ -270,6 +306,24 @@ var exampleConfig = {
                         name_en: "1",
                         thumbnail: "notice.png",
                         fileName: "aa_dataSource_cluster"
+                    },
+                ]
+            },
+        },
+    },
+    "three": {
+        name: "three",
+        name_en: "1",
+        content: {
+            "three": {
+                name: "three",
+                name_en: "2",
+                content: [
+                    {
+                        name: "全景图",
+                        name_en: "1",
+                        thumbnail: "notice.png",
+                        fileName: "three_全景图"
                     },
                 ]
             },
